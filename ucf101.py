@@ -198,11 +198,12 @@ class ucf101(data.Dataset):
                                         self.name_pattern
                                         )
         elif self.modality == "flow":
-            out2 = path.split('/')
+            out_u = path.split('/')
+            out_v = path.split('/')
             print('\nout2: ', out2)
-            out_u = out2.insert(8, 'u')
+            out_u.insert(8, 'u')
             print('\nout_u: ', out_u)
-            out_v = out2.insert(8, 'v')
+            out_v.insert(8, 'v')
             print('\nout_v: ', out_v)
             path1 = "/".join(out_u)
             path2 = "/".join(out_v)
