@@ -43,6 +43,7 @@ def ReadSegmentRGB(path, offsets, new_height, new_width, new_length, is_color, n
         offset = offsets[offset_id]
         for length_id in range(1, new_length+1):
             frame_name = name_pattern % (length_id + offset)
+            print("\nframe_name: ", frame_name)
             frame_path = path + "/" + frame_name
             cv_img_origin = cv2.imread(frame_path, cv_read_flag)
             if cv_img_origin is None:
@@ -186,6 +187,10 @@ class ucf101(data.Dataset):
                                         )
         else:
             print("No such modality %s" % (self.modality))
+            
+        print("\npath: ", path)
+        print('\noffsets: ', offsets)
+        print('\nname_pattern', self.name_pattern)
 
         if self.transform is not None:
             clip_input = self.transform(clip_input)
