@@ -87,7 +87,7 @@ def ReadSegmentFlow(path1, path2, offsets, new_height, new_width, new_length, is
             
             frame_name_y = name_pattern % (length_id + offset)
             frame_path_y = path2 + "/" + frame_name_y
-             print('\nframe-path-y: ', frame_path_y)
+            print('\nframe-path-y: ', frame_path_y)
             cv_img_origin_y = cv2.imread(frame_path_y, cv_read_flag)
             
             if cv_img_origin_x is None or cv_img_origin_y is None:
@@ -199,8 +199,11 @@ class ucf101(data.Dataset):
                                         )
         elif self.modality == "flow":
             out2 = path.split('/')
+            print('\nout2: ', out2)
             out_u = out2.insert(8, 'u')
+            print('\nout_u: ', out_u)
             out_v = out2.insert(8, 'v')
+            print('\nout_v: ', out_v)
             path1 = "/".join(out_u)
             path2 = "/".join(out_v)
             
