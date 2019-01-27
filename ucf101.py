@@ -67,17 +67,21 @@ def ReadSegmentFlow(path, offsets, new_height, new_width, new_length, is_color, 
         cv_read_flag = cv2.IMREAD_GRAYSCALE     # = 0
     interpolation = cv2.INTER_LINEAR
 
+    print('path2: ', path)
     sampled_list = []
     for offset_id in range(len(offsets)):
         offset = offsets[offset_id]
         for length_id in range(1, new_length+1):
+            
             frame_name_x = name_pattern % (length_id + offset)
             #frame_name_x = name_pattern % ("x", length_id + offset)
-            frame_path_x = path + "/u/" + frame_name_x
+            frame_path_x = path + "/" + frame_name_x
             cv_img_origin_x = cv2.imread(frame_path_x, cv_read_flag)
+            
             frame_name_y = name_pattern % ("y", length_id + offset)
             frame_path_y = path + "/" + frame_name_y
             cv_img_origin_y = cv2.imread(frame_path_y, cv_read_flag)
+            
             if cv_img_origin_x is None or cv_img_origin_y is None:
                print("Could not load file %s or %s" % (frame_path_x, frame_path_y))
                sys.exit()
@@ -98,7 +102,7 @@ def ReadSegmentFlow(path, offsets, new_height, new_width, new_length, is_color, 
 class ucf101(data.Dataset):
 
     def __init__(self,
-                 root,
+                 root, #root is the path in args
                  source,
                  phase,
                  modality,
@@ -171,9 +175,9 @@ class ucf101(data.Dataset):
                 print("Only phase train and val are supported.")
 
 
-        print("\npath: ", path)
-        print('\noffsets: ', offsets)
-        print('\nname_pattern', self.name_pattern)
+        #print("\npath: ", path)
+        #print('\noffsets: ', offsets)
+        #print('\nname_pattern', self.name_pattern)
 
         if self.modality == "rgb":
             clip_input = ReadSegmentRGB(path,
