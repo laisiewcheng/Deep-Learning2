@@ -13,6 +13,11 @@ def find_classes(dir):
     class_to_idx = {classes[i]: i for i in range(len(classes))}
     return classes, class_to_idx
 
+#root:  /home/laisc/two-stream/tomar/data/flow/tvl1_flow                                                                                                
+                                                                                                                                             
+#source:  ./datasets/settings/ucf101/train_flow_split1.txt     
+
+
 def make_dataset(root, source):
 
     if not os.path.exists(source):
@@ -60,14 +65,15 @@ def ReadSegmentRGB(path, offsets, new_height, new_width, new_length, is_color, n
     clip_input = np.concatenate(sampled_list, axis=2)
     return clip_input
 
-def ReadSegmentFlow(path, offsets, new_height, new_width, new_length, is_color, name_pattern):
+def ReadSegmentFlow(path1, path2, offsets, new_height, new_width, new_length, is_color, name_pattern):
     if is_color:
         cv_read_flag = cv2.IMREAD_COLOR         # > 0
     else:
         cv_read_flag = cv2.IMREAD_GRAYSCALE     # = 0
     interpolation = cv2.INTER_LINEAR
 
-    print('path2: ', path)
+    print('\npath1: ', path1)
+    print('\npath2: ', path2)
     sampled_list = []
     for offset_id in range(len(offsets)):
         offset = offsets[offset_id]
@@ -75,11 +81,13 @@ def ReadSegmentFlow(path, offsets, new_height, new_width, new_length, is_color, 
             
             frame_name_x = name_pattern % (length_id + offset)
             #frame_name_x = name_pattern % ("x", length_id + offset)
-            frame_path_x = path + "/" + frame_name_x
+            frame_path_x = path1 + "/" + frame_name_x
+            print('\nframe-path-x: ', frame_path_x)
             cv_img_origin_x = cv2.imread(frame_path_x, cv_read_flag)
             
-            frame_name_y = name_pattern % ("y", length_id + offset)
-            frame_path_y = path + "/" + frame_name_y
+            frame_name_y = name_pattern % (length_id + offset)
+            frame_path_y = path2 + "/" + frame_name_y
+             print('\nframe-path-y: ', frame_path_y)
             cv_img_origin_y = cv2.imread(frame_path_y, cv_read_flag)
             
             if cv_img_origin_x is None or cv_img_origin_y is None:
@@ -178,6 +186,7 @@ class ucf101(data.Dataset):
         #print("\npath: ", path)
         #print('\noffsets: ', offsets)
         #print('\nname_pattern', self.name_pattern)
+        
 
         if self.modality == "rgb":
             clip_input = ReadSegmentRGB(path,
@@ -189,14 +198,21 @@ class ucf101(data.Dataset):
                                         self.name_pattern
                                         )
         elif self.modality == "flow":
-            clip_input = ReadSegmentFlow(path,
-                                        offsets,
-                                        self.new_height,
-                                        self.new_width,
-                                        self.new_length,
-                                        self.is_color,
-                                        self.name_pattern
-                                        )
+            out2 = path.split('/')
+            out_u = out2.insert(8, 'u')
+            out_v = out2.insert(8, 'v')
+            path1 = "/".join(out_u)
+            path2 = "/".join(out_v)
+            
+            clip_input = ReadSegmentFlow(path1,
+                                         path2,
+                                         offsets,
+                                         self.new_height,
+                                         self.new_width,
+                                         self.new_length,
+                                         self.is_color,
+                                         self.name_pattern
+                                         )
         else:
             print("No such modality %s" % (self.modality))
             
