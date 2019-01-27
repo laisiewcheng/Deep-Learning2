@@ -71,8 +71,9 @@ def ReadSegmentFlow(path, offsets, new_height, new_width, new_length, is_color, 
     for offset_id in range(len(offsets)):
         offset = offsets[offset_id]
         for length_id in range(1, new_length+1):
-            frame_name_x = name_pattern % ("x", length_id + offset)
-            frame_path_x = path + "/" + frame_name_x
+            frame_name_x = name_pattern % (length_id + offset)
+            #frame_name_x = name_pattern % ("x", length_id + offset)
+            frame_path_x = path + "/u/" + frame_name_x
             cv_img_origin_x = cv2.imread(frame_path_x, cv_read_flag)
             frame_name_y = name_pattern % ("y", length_id + offset)
             frame_path_y = path + "/" + frame_name_y
@@ -114,6 +115,9 @@ class ucf101(data.Dataset):
         classes, class_to_idx = find_classes(root)
         clips = make_dataset(root, source)
 
+        print('\nroot: ', root)
+        print('\nsource: ', source)
+
         if len(clips) == 0:
             raise(RuntimeError("Found 0 video clips in subfolders of: " + root + "\n"
                                "Check your data directory."))
@@ -131,9 +135,9 @@ class ucf101(data.Dataset):
             self.name_pattern = name_pattern
         else:
             if self.modality == "rgb":
-                self.name_pattern = "img_%05d.jpg"
+                self.name_pattern = "frame_%06d.jpg"
             elif self.modality == "flow":
-                self.name_pattern = "flow_%05d.jpg"
+                self.name_pattern = "frame_%06d.jpg"
                 #self.name_pattern = "flow_%s_%05d.jpg"
 
         self.is_color = is_color
