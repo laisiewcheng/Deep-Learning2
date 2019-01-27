@@ -72,8 +72,8 @@ def ReadSegmentFlow(path1, path2, offsets, new_height, new_width, new_length, is
         cv_read_flag = cv2.IMREAD_GRAYSCALE     # = 0
     interpolation = cv2.INTER_LINEAR
 
-    print('\npath1: ', path1)
-    print('\npath2: ', path2)
+    #print('\npath1: ', path1)
+    #print('\npath2: ', path2)
     sampled_list = []
     for offset_id in range(len(offsets)):
         offset = offsets[offset_id]
@@ -82,12 +82,12 @@ def ReadSegmentFlow(path1, path2, offsets, new_height, new_width, new_length, is
             frame_name_x = name_pattern % (length_id + offset)
             #frame_name_x = name_pattern % ("x", length_id + offset)
             frame_path_x = path1 + "/" + frame_name_x
-            print('\nframe-path-x: ', frame_path_x)
+            #print('\nframe-path-x: ', frame_path_x)
             cv_img_origin_x = cv2.imread(frame_path_x, cv_read_flag)
             
             frame_name_y = name_pattern % (length_id + offset)
             frame_path_y = path2 + "/" + frame_name_y
-            print('\nframe-path-y: ', frame_path_y)
+            #print('\nframe-path-y: ', frame_path_y)
             cv_img_origin_y = cv2.imread(frame_path_y, cv_read_flag)
             
             if cv_img_origin_x is None or cv_img_origin_y is None:
@@ -147,9 +147,9 @@ class ucf101(data.Dataset):
             self.name_pattern = name_pattern
         else:
             if self.modality == "rgb":
-                self.name_pattern = "frame_%06d.jpg"
+                self.name_pattern = "frame%06d.jpg"
             elif self.modality == "flow":
-                self.name_pattern = "frame_%06d.jpg"
+                self.name_pattern = "frame%06d.jpg"
                 #self.name_pattern = "flow_%s_%05d.jpg"
 
         self.is_color = is_color
@@ -200,12 +200,12 @@ class ucf101(data.Dataset):
         elif self.modality == "flow":
             out_u = path.split('/')
             out_v = path.split('/')
-            print('\nout_u1: ', out_u)
-            print('\nout_v1: ', out_v)
+            #print('\nout_u1: ', out_u)
+            #print('\nout_v1: ', out_v)
             out_u.insert(8, 'u')
-            print('\nout_u2: ', out_u)
+            #print('\nout_u2: ', out_u)
             out_v.insert(8, 'v')
-            print('\nout_v2: ', out_v)
+            #print('\nout_v2: ', out_v)
             path1 = "/".join(out_u)
             path2 = "/".join(out_v)
             
