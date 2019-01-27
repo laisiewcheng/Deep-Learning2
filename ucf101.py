@@ -167,6 +167,10 @@ class ucf101(data.Dataset):
                 print("Only phase train and val are supported.")
 
 
+        print("\npath: ", path)
+        print('\noffsets: ', offsets)
+        print('\nname_pattern', self.name_pattern)
+
         if self.modality == "rgb":
             clip_input = ReadSegmentRGB(path,
                                         offsets,
@@ -188,10 +192,6 @@ class ucf101(data.Dataset):
         else:
             print("No such modality %s" % (self.modality))
             
-        print("\npath: ", path)
-        print('\noffsets: ', offsets)
-        print('\nname_pattern', self.name_pattern)
-
         if self.transform is not None:
             clip_input = self.transform(clip_input)
         if self.target_transform is not None:
