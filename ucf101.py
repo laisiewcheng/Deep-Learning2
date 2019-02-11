@@ -95,8 +95,8 @@ def ReadSegmentFlow(path1, path2, offsets, new_height, new_width, new_length, is
                sys.exit()
                # TODO: error handling here
             if new_width > 0 and new_height > 0:
-                cv_img_x = cv2.resize(cv_img_origin_x, (new_width, new_height), interpolation)
-                cv_img_y = cv2.resize(cv_img_origin_y, (new_width, new_height), interpolation)
+                cv_img_x = cv2.resize(cv_img_origin_x, (new_width, new_height), interpolation = interpolation)
+                cv_img_y = cv2.resize(cv_img_origin_y, (new_width, new_height), interpolation = interpolation)
             else:
                 cv_img_x = cv_img_origin_x
                 cv_img_y = cv_img_origin_y
