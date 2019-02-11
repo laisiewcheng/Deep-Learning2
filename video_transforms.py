@@ -331,7 +331,7 @@ class MultiScaleCrop(object):
             for frame_id in range(num_imgs):
                 cur_img = clips[:,:,frame_id:frame_id+1]
                 crop_img = cur_img[h_off:h_off+crop_height, w_off:w_off+crop_width, :]
-                scaled_clips[:,:,frame_id:frame_id+1] = np.expand_dims(cv2.resize(crop_img, (self.width, self.height), self.interpolation), axis=2)
+                scaled_clips[:,:,frame_id:frame_id+1] = np.expand_dims(cv2.resize(crop_img, (self.width, self.height), interpolation = self.interpolation), axis=2)
             return scaled_clips
 
 
